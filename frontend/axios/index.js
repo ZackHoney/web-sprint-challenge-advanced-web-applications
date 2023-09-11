@@ -7,7 +7,6 @@ const credentials = {
     password: '12345678'
   }
 
-  let token = '';
 
  export const axiosWithAuth = () => {
     axios.post('http://localhost:9000/api/login', credentials)
