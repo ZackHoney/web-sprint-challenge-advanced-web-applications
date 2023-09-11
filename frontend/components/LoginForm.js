@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import PT from 'prop-types'
 import axios from 'axios'
-import { axiosWithAuth } from '../axios'
 
 const initialFormValues = {
   username: '',
   password: '',
 }
 
-
+const credentials = {
+  username: 'asdf',
+  password: '12345678'
+}
 
 
 export default function LoginForm(props) {
@@ -22,7 +24,12 @@ export default function LoginForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
-    axiosWithAuth()
+    axios.post('http://localhost:9000/api/login', credentials)
+    .then(res => {
+      console.log(res)
+        localStorage.setItem('token', res.data.token)
+        })
+    .catch(err => console.log(err))
     // ✨ implement
     
   }
