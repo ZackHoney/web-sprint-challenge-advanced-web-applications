@@ -28,8 +28,10 @@ export default function LoginForm(props) {
     .then(res => {
       console.log(res)
         localStorage.setItem('token', res.data.token)
+        
+        
         })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err.response))
     // ✨ implement
     
   }
