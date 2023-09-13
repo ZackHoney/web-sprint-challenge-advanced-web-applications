@@ -8,8 +8,8 @@ const initialFormValues = {
 }
 
 const credentials = {
-  username: 'asdf',
-  password: '12345678'
+  username: '',
+  password: ''
 }
 
 
@@ -27,9 +27,8 @@ export default function LoginForm(props) {
     axios.post('http://localhost:9000/api/login', credentials)
     .then(res => {
       console.log(res)
-        localStorage.setItem('token', res.data.token)
-        
-        
+        localStorage.setItem('token', res.data.token);
+        history.pushState('/protected');
         })
     .catch(err => console.log(err.response))
     // ✨ implement
