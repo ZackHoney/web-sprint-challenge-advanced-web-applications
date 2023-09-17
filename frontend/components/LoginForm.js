@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
 import PT from 'prop-types'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
 const initialFormValues = {
   username: '',
   password: '',
 }
 
-const credentials = {
-  username: '',
-  password: ''
-}
 
 
 export default function LoginForm(props) {
   const [values, setValues] = useState(initialFormValues)
   // ✨ where are my props? Destructure them here
+  const navigate = useNavigate();
 
   const onChange = evt => {
     const { id, value } = evt.target
@@ -24,13 +21,13 @@ export default function LoginForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
-    axios.post('http://localhost:9000/api/login', credentials)
+    axios.post('http://localhost:9000/api/login', {username: values.username, password: values.password})
     .then(res => {
       console.log(res)
         localStorage.setItem('token', res.data.token);
-        history.pushState('/protected');
+        navigate('/articles')
         })
-    .catch(err => console.log(err.response))
+    .catch(err => console.log(err.message))
     // ✨ implement
     
   }

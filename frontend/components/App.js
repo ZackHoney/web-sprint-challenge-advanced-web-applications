@@ -7,6 +7,7 @@ import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
 import { axiosWithAuth } from '../axios'
+import e from 'cors'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -39,19 +40,6 @@ export default function App() {
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
-    setMessage('')
-    setSpinnerOn(true)
-
-
-
-
-    if (!username && !password) {
-      return redirectToLogin();
-    }
-
-    return redirectToArticles(),
-           axiosWithAuth(),
-           setMessage(res.data.message)
     
   }
   const getArticles = () => {
