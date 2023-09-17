@@ -1,14 +1,9 @@
-// ✨ implement axiosWithAuth
-import React from "react";
+// ✨ implement axiosWithAuth  //
 import axios from "axios";
 
-const credentials = {
-    username: 'qwe',
-    password: '12345678'
-  }
 
-  let token = '';
 
+<<<<<<< HEAD
  export const axiosWithAuth = () => {
     axios.post('http://localhost:9000/api/login', credentials)
     .then(res => {
@@ -17,3 +12,13 @@ const credentials = {
         })
     .catch(err => console.log(err))
 }
+=======
+export const axiosWithAuth = () => {
+    const token = localStorage.getItem('token');
+
+    return axios.create({
+        baseUrl: 'http://localhost:9000/api',
+        headers: { authorization: token},
+    });
+};
+>>>>>>> bfdac2864898b5f5516c754a633acf1ae9478beb

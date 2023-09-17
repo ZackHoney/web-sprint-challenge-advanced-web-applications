@@ -64,6 +64,18 @@ export default function App() {
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
 
+<<<<<<< HEAD
+=======
+    axios.get('http://localhost:9000/api/articles')
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err.response)
+    })
+  
+  
+>>>>>>> bfdac2864898b5f5516c754a633acf1ae9478beb
   }
 
 
@@ -97,6 +109,7 @@ export default function App() {
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm />} />
+          <Route path='/login' element={<LoginForm />} />
           <Route path="/articles" element={
             <>
               <ArticleForm />
