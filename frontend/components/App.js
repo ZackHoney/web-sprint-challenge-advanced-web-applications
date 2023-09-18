@@ -99,10 +99,11 @@ export default function App() {
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm login={login}/>} />
+          <Route path='/login' element={<LoginForm />} />
           <Route path="/articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles getArticles={getArticles}/>
             </>
           } />
         </Routes>
