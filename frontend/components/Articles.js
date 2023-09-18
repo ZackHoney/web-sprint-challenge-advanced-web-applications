@@ -11,8 +11,9 @@ if(!localStorage.getItem('token'))
 return Navigate('/login')
 
   useEffect(() => {
+    getArticles()
     // ✨ grab the articles here, on first render only
-  })
+  }, [])
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions

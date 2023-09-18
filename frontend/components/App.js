@@ -49,7 +49,6 @@ export default function App() {
 
     axios.post(loginUrl, {username, password})
     .then(res => {
-      console.log(res)
         localStorage.setItem('token', res.data.token);
         setMessage(res.data.message)
         redirectToArticles()
@@ -72,12 +71,12 @@ export default function App() {
     setMessage('')
     setSpinnerOn(true)
 
-    axios.get(articlesUrl, axiosWithAuth)
-    .then(res => console.log(res))
-    .catch(err => err.message)
+    axiosWithAuth()
+    .get(articlesUrl)
+    .then(res => 
+      setArticles(res.data))
+    .catch(err => console.log(err.message))
     .finally(() => setSpinnerOn(false))
-
-    
   }
 
 
@@ -114,8 +113,8 @@ export default function App() {
           <Route path='/login' element={<LoginForm login={login}/>} />
           <Route path="/articles" element={
             <>
-              <ArticleForm getArticles={getArticles}/>
-              <Articles />
+              <ArticleForm />
+              <Articles  getArticles={getArticles}/>
             </>
           } />
         </Routes>
