@@ -26,6 +26,10 @@ export default function App() {
   const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
+    localStorage.setItem('token', '');
+    setMessage('Goodbye!');
+    redirectToLogin();
+    
     // ✨ implement
     // If a token is in local storage it should be removed,
     // and a message saying "Goodbye!" should be set in its proper state.
@@ -65,7 +69,15 @@ export default function App() {
     // If something goes wrong, check the status of the response:
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
+    setMessage('')
+    setSpinnerOn(true)
 
+    axios.get(articlesUrl, axiosWithAuth)
+    .then(res => console.log(res))
+    .catch(err => err.message)
+    .finally(() => setSpinnerOn(false))
+
+    
   }
 
 
@@ -90,7 +102,7 @@ export default function App() {
     <>
       <Spinner />
       <Message />
-      <button id="logout" onClick={logout}>Logout from app</button>
+      <button id="logout"  onClick={logout}>Logout from app</button>
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}> {/* <-- do not change this line */}
         <h1>Advanced Web Applications</h1>
         <nav>
@@ -99,11 +111,11 @@ export default function App() {
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm login={login}/>} />
-          <Route path='/login' element={<LoginForm />} />
+          <Route path='/login' element={<LoginForm login={login}/>} />
           <Route path="/articles" element={
             <>
-              <ArticleForm />
-              <Articles getArticles={getArticles}/>
+              <ArticleForm getArticles={getArticles}/>
+              <Articles />
             </>
           } />
         </Routes>
