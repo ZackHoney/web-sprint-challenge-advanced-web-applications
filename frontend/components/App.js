@@ -58,7 +58,7 @@ export default function App() {
 
   }
 
-  const getArticles = () => {
+  const getArticles = (articles) => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -84,15 +84,52 @@ export default function App() {
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
+    setMessage('');
+    setSpinnerOn(true);
+    axiosWithAuth()
+    .post('/articles', article)
+    .then(res => {
+      setArticles([...articles, res.data.article]);
+      setMessage(res.data.message);
+    })
+    .catch(err => err.status === 401 ? redirectToLogin() : null)
+    .finally(() => {
+      setSpinnerOn(false)
+    })
   }
 
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
+    setMessage('');
+    setSpinnerOn(true);
+    axiosWithAuth()
+    .put(`/articles/${article_id}`, article)
+    .then(res => {
+      setMessage(res.data.message);
+      setArticles(
+        articles.map((article) => 
+          article.article_id === article_id ? res.data.article: article 
+        )
+      )
+    })
+    .catch(err => err.status === 401 ? redirectToLogin() : null)
+    .finally(() => setSpinnerOn(false))
   }
 
   const deleteArticle = article_id => {
     // ✨ implement
+    axiosWithAuth()
+    .delete(`/articles/${article_id}`)
+    .then(res => {
+      setMessage(res.data.message);
+      setArticles(
+        articles.filter((article) => article.article_id)
+      );
+    })
+    .catch(err => {
+      setMessage(err.message);
+    })
   }
 
   return (
