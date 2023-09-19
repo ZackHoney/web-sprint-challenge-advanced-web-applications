@@ -54,7 +54,6 @@ export default function App() {
         redirectToArticles()
         })
     .catch(err => console.log(err.message))
-
     .finally(() => setSpinnerOn(false))
 
   }
@@ -70,12 +69,12 @@ export default function App() {
     // Don't forget to turn off the spinner!
     setMessage('')
     setSpinnerOn(true)
-
     axiosWithAuth()
-    .get(articlesUrl)
+    .get('/articles')
     .then(res => 
-      setArticles(res.data))
-    .catch(err => console.log(err.message))
+      setArticles(res.data.articles))
+      setMessage(res.data.message)
+    .catch(err => err.status === 401 ? redirectToLogin() : null)
     .finally(() => setSpinnerOn(false))
   }
 
