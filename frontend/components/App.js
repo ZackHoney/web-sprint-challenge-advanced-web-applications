@@ -71,7 +71,7 @@ export default function App() {
     setMessage('')
     setSpinnerOn(true)
     axiosWithAuth()
-    .get(articlesUrl)
+    .get('/articles')
     .then(res => {
       setArticles(res.data.articles)
       setMessage(res.data.message)
@@ -91,7 +91,7 @@ export default function App() {
     setMessage('');
     setSpinnerOn(true);
     axiosWithAuth()
-    .post(articlesUrl, article)
+    .post('/articles', article)
     .then(res => {
       setArticles([...articles, res.data.article]);
       setMessage(res.data.message);
@@ -128,7 +128,7 @@ export default function App() {
   const deleteArticle = article_id => {
     // ✨ implement
     axiosWithAuth()
-    .delete(`/articles/${article_id}`)
+    .delete(`/articles/${article_id}`, article_id)
     .then(res => {
       setMessage(res.data.message);
       setArticles(
