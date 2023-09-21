@@ -71,7 +71,7 @@ export default function App() {
     setMessage('')
     setSpinnerOn(true)
     axiosWithAuth()
-    .get('/articles')
+    .get(articlesUrl)
     .then(res => {
       setArticles(res.data.articles)
       setMessage(res.data.message)
@@ -91,7 +91,7 @@ export default function App() {
     setMessage('');
     setSpinnerOn(true);
     axiosWithAuth()
-    .post('/articles', article)
+    .post(articlesUrl, article)
     .then(res => {
       setArticles([...articles, res.data.article]);
       setMessage(res.data.message);
