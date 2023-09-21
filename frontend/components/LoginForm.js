@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import PT from 'prop-types'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
 const initialFormValues = {
   username: '',
@@ -29,7 +27,7 @@ export default function LoginForm(props) {
     // Trimmed username must be >= 3, and
     // trimmed password must be >= 8 for
     // the button to become enabled
-  return values.username.trim().length <= 2 || values.password.trim().length <= 7
+  return values.username.trim().length < 3 || values.password.trim().length < 8
     
   }
 

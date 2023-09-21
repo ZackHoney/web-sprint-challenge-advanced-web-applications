@@ -7,7 +7,6 @@ import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
 import { axiosWithAuth } from '../axios'
-import e from 'cors'
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -26,7 +25,7 @@ export default function App() {
   const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
-    localStorage.setItem('token', '');
+    localStorage.removeItem('token');
     setMessage('Goodbye!');
     redirectToLogin();
     
@@ -53,12 +52,14 @@ export default function App() {
         setMessage(res.data.message)
         redirectToArticles()
         })
-    .catch(err => console.log(err.message))
+    .catch(err => {
+    setMessage(err.message)
+    })
     .finally(() => setSpinnerOn(false))
 
   }
 
-  const getArticles = (articles) => {
+  const getArticles = () => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -71,10 +72,13 @@ export default function App() {
     setSpinnerOn(true)
     axiosWithAuth()
     .get('/articles')
-    .then(res => 
-      setArticles(res.data.articles))
+    .then(res => {
+      setArticles(res.data.articles)
       setMessage(res.data.message)
-    .catch(err => err.status === 401 ? redirectToLogin() : null)
+    })
+    .catch(err => {
+      err.status === 401 ? redirectToLogin() : null
+    })
     .finally(() => setSpinnerOn(false))
   }
 
@@ -92,7 +96,9 @@ export default function App() {
       setArticles([...articles, res.data.article]);
       setMessage(res.data.message);
     })
-    .catch(err => err.status === 401 ? redirectToLogin() : null)
+    .catch(err => {
+      err.status === 401 ? redirectToLogin() : null
+    })
     .finally(() => {
       setSpinnerOn(false)
     })
@@ -113,7 +119,9 @@ export default function App() {
         )
       )
     })
-    .catch(err => err.status === 401 ? redirectToLogin() : null)
+    .catch(err => {
+      err.status === 401 ? redirectToLogin() : null
+    })
     .finally(() => setSpinnerOn(false))
   }
 
@@ -124,7 +132,7 @@ export default function App() {
     .then(res => {
       setMessage(res.data.message);
       setArticles(
-        articles.filter((article) => article.article_id)
+        articles.filter((article) => article.article_id !== article_id) 
       );
     })
     .catch(err => {
@@ -135,9 +143,9 @@ export default function App() {
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
-      <Spinner />
-      <Message />
-      <button id="logout"  onClick={logout}>Logout from app</button>
+      <Spinner on={spinnerOn} />
+      <Message message={message}/>
+      {!localStorage.getItem("token") ? null : (<button id="logout"  onClick={logout}>Logout from app</button>)}
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}> {/* <-- do not change this line */}
         <h1>Advanced Web Applications</h1>
         <nav>
@@ -146,11 +154,22 @@ export default function App() {
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm login={login}/>} />
-          <Route path='/login' element={<LoginForm login={login}/>} />
           <Route path="/articles" element={
             <>
-              <ArticleForm />
-              <Articles  getArticles={getArticles}/>
+              <ArticleForm 
+              articles={articles}
+              postArticle={postArticle}
+              updateArticle={updateArticle}
+              setCurrentArticleId={setCurrentArticleId}
+              currentArticleId={currentArticleId}
+               />
+              <Articles 
+               getArticles={getArticles}
+               articles={articles}
+               deleteArticle={deleteArticle}
+               setCurrentArticleId={setCurrentArticleId}
+               currentArticleId={currentArticleId}
+               />
             </>
           } />
         </Routes>
